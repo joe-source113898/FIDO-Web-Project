@@ -1,0 +1,197 @@
+{% extends "base_template.html" %}
+{% block title %}Propiedades - Fuerza Inmobiliaria de Occidente{% endblock %}
+{% block content %}
+<!-- Header de la Página de Propiedades -->
+<header class="hero-section text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Propiedades Disponibles</h1>
+        <p class="lead mt-3">Encuentra el lugar perfecto para vivir o invertir.</p>
+    </div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Explora Nuestras Opciones</h2>
+
+        <!-- Botones de Filtro y Generar PDF -->
+        <div class="text-end mb-3">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterForm"
+                    aria-expanded="false" aria-controls="filterForm">
+                Filtrar Propiedades <i class="bi bi-funnel-fill"></i>
+            </button>
+            <a class="btn btn-success ms-2" href="#" id="pdfButton">Generar PDF <i class="bi bi-file-earmark-pdf-fill"></i></a>
+        </div>
+
+        <!-- Formulario de Filtros (Colapsable) -->
+        <div class="collapse mb-4" id="filterForm">
+            <div class="card card-body">
+                <form method="GET" action="{{ url_for('properties') }}">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="operation" class="form-label">Tipo de operación:</label>
+                            <select class="form-select" id="operation" name="operation">
+                                <option value="">Cualquiera</option>
+                                <option value="venta" {% if filters.operation == 'venta' %}selected{% endif %}>Venta</option>
+                                <option value="renta" {% if filters.operation == 'renta' %}selected{% endif %}>Renta</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="type" class="form-label">Tipo de propiedad:</label>
+                            <select class="form-select" id="type" name="type">
+                                <option value="">Cualquiera</option>
+                                <option value="casa" {% if filters.type == 'casa' %}selected{% endif %}>Casa</option>
+                                <option value="departamento" {% if filters.type == 'departamento' %}selected{% endif %}>Departamento</option>
+                                <option value="local" {% if filters.type == 'local' %}selected{% endif %}>Local</option>
+                                <option value="terreno" {% if filters.type == 'terreno' %}selected{% endif %}>Terreno</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="min_price" class="form-label">Precio mínimo:</label>
+                            <input type="number" class="form-control" id="min_price" name="min_price"
+                                   value="{{ filters.min_price or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="max_price" class="form-label">Precio máximo:</label>
+                            <input type="number" class="form-control" id="max_price" name="max_price"
+                                   value="{{ filters.max_price or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="bedrooms" class="form-label">Recámara(s):</label>
+                            <input type="number" class="form-control" id="bedrooms" name="bedrooms"
+                                   value="{{ filters.bedrooms or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="bathrooms" class="form-label">Baño(s):</label>
+                            <input type="number" class="form-control" id="bathrooms" name="bathrooms"
+                                   value="{{ filters.bathrooms or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="parking" class="form-label">Espacio para auto(s):</label>
+                            <input type="number" class="form-control" id="parking" name="parking"
+                                   value="{{ filters.parking or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="colony" class="form-label">Colonia:</label>
+                            <input type="text" class="form-control" id="colony" name="colony"
+                                   value="{{ filters.colony or '' }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="municipality" class="form-label">Municipio:</label>
+                            <input type="text" class="form-control" id="municipality" name="municipality"
+                                   value="{{ filters.municipality or '' }}">
+                        </div>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        <a href="{{ url_for('properties') }}" class="btn btn-secondary ms-2">Limpiar Filtros</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Script para Generar la URL del PDF con los Mismos Parámetros -->
+        <script>
+            const pdfButton = document.getElementById('pdfButton');
+            const currentParams = new URLSearchParams(window.location.search);
+            pdfButton.href = "{{ url_for('properties_pdf') }}" + "?" + currentParams.toString();
+        </script>
+
+        <!-- Listado de Propiedades -->
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% if properties and properties|length > 0 %}
+                {% for property in properties %}
+                <div class="col">
+                    <div class="card h-100 property-item shadow-sm">
+                        <!-- Enlace con Slug -->
+                        <a href="{{ url_for('property_detail', property_id=property[0], slug=property[1]|slugify) }}"
+                           class="text-decoration-none text-dark">
+
+                            <!-- Imagen de la Propiedad -->
+                            {% if property[14] and property[14].split(',')[0] %}
+                                <img
+                                    src="{{ url_for('static', filename='images/properties/' + property[0]|string + '/' + property[14].split(',')[0]) }}"
+                                    class="card-img-top"
+                                    alt="{{ property[1] }}">
+                            {% else %}
+                                <img
+                                    src="{{ url_for('static', filename='images/default_property.png') }}"
+                                    class="card-img-top"
+                                    alt="Imagen no disponible">
+                            {% endif %}
+
+                            <!-- Etiqueta de Operación -->
+                            <span class="operation-badge">{{ property[3] }}</span>
+                        </a>
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ property[1] }}</h5>
+                            <p class="card-text">
+                                {{ property[5] }} recámaras,
+                                {% set bathrooms_float = property[6]|float %}
+                                {% set bathrooms_int = property[6]|int %}
+                                {% if bathrooms_float == bathrooms_int %}
+                                    {% set bathrooms_display = bathrooms_int %}
+                                {% else %}
+                                    {% set bathrooms_display = bathrooms_float %}
+                                {% endif %}
+
+                                {% if bathrooms_display == 1 %}
+                                    {{ bathrooms_display }} baño
+                                {% else %}
+                                    {{ bathrooms_display }} baños
+                                {% endif %}
+                                - ${{ "{:,.0f}".format(property[2]) }} MXN
+                            </p>
+                            <p class="text-muted">{{ property[10] }}, {{ property[11] }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center text-muted">No se encontraron propiedades con esos filtros.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Controles de Paginación -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Botón de Página Anterior -->
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('properties', page=page-1, **filters) }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- Botones de Páginas Numeradas -->
+                {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('properties', page=p, **filters) }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                <!-- Botón de Página Siguiente -->
+                <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('properties', page=page+1, **filters) }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Puedes añadir scripts adicionales aquí si es necesario
+</script>
+{% endblock %}

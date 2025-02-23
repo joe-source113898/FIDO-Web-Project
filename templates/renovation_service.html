@@ -1,0 +1,190 @@
+{% extends "base_template.html" %}
+{% block title %}Remodelaciones - Fuerza Inmobiliaria de Occidente{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Proyecto de Remodelación - Casa en Lomas de Zapopan, Zapopan</h2>
+
+        <!-- "Before" slider -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4">Antes:</h3>
+            <div id="beforeCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for img in before_images %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <!-- Agregamos renovation-image y lightbox-image -->
+                        <img src="{{ img }}" class="d-block w-100 renovation-image lightbox-image" alt="Antes">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#beforeCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#beforeCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- "After" slider -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4">Después:</h3>
+            <div id="afterCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for img in after_images %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <!-- Agregamos renovation-image y lightbox-image -->
+                        <img src="{{ img }}" class="d-block w-100 renovation-image lightbox-image" alt="Después">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#afterCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#afterCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Explanation of the renovation service -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4">Nuestro Servicio de Remodelación</h3>
+            <p>
+                En Fuerza Inmobiliaria de Occidente, nos comprometemos a transformar tu hogar con un proceso de remodelación eficiente y de alta calidad. Nuestro servicio incluye:
+            </p>
+            <ul>
+                <li><strong>Evaluación Inicial:</strong> Analizamos tus necesidades y objetivos para la remodelación.</li>
+                <li><strong>Cotización:</strong> Elaboramos una propuesta detallada con los costos estimados del proyecto.</li>
+                <li><strong>Diseño Personalizado:</strong> Creamos planos y diseños que reflejan tu visión.</li>
+                <li><strong>Selección de Materiales:</strong> Elegimos materiales duraderos y estéticamente agradables.</li>
+                <li><strong>Pago:</strong> Establecemos las condiciones de pago acordadas para la ejecución del proyecto.</li>
+                <li><strong>Ejecución del Proyecto:</strong> Nuestro equipo de profesionales lleva a cabo la remodelación con precisión y cuidado.</li>
+                <li><strong>Inspección Final:</strong> Revisamos cada detalle para asegurar la calidad del trabajo realizado.</li>
+                <li><strong>Entrega:</strong> Entregamos tu vivienda remodelada, lista para que la disfrutes.</li>
+            </ul>
+            <p>
+                Nos enorgullece ofrecer un servicio integral que garantiza la satisfacción de nuestros clientes en cada etapa del proyecto.
+            </p>
+        </div>
+
+        <!-- Call button -->
+        <div class="text-center mb-5">
+            <a href="tel:+523322018115" class="btn btn-primary btn-lg">
+                <i class="bi bi-telephone-fill"></i> Llámanos para Solicitar una Cotización
+            </a>
+        </div>
+
+        <!-- Contact form -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4">Contáctanos para tu Proyecto de Remodelación</h3>
+            <form action="{{ url_for('send_contact') }}" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="name" name="name" required placeholder="Tu nombre">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo:</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="nombre@correo.com">
+                </div>
+                <div class="mb-3">
+                    <label for="phonenumber" class="form-label">Teléfono:</label>
+                    <input type="tel" class="form-control" id="phonenumber" name="phonenumber" required placeholder="Tu teléfono">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Mensaje:</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Cuéntanos sobre tu proyecto de remodelación..."></textarea>
+                </div>
+                <!-- Campo oculto para indicar la página de origen -->
+                <input type="hidden" name="property_url" value="{{ request.url }}">
+                <button type="submit" class="btn btn-success">Enviar Mensaje</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox-backdrop" id="lightbox-backdrop" style="display: none;">
+    <img id="lightbox-image" src="" alt="Imagen en grande" style="max-width: 90%; max-height: 90%;">
+</div>
+<div class="lightbox-controls" id="lightbox-controls" style="display: none;">
+    <button id="prev-image" class="btn btn-light">&lt;</button>
+    <button id="next-image" class="btn btn-light">&gt;</button>
+</div>
+<button class="lightbox-close btn btn-light" id="close-lightbox" style="display: none;">&times;</button>
+{% endblock %}
+
+{% block styles %}
+<!-- Aquí no se requiere cambio en CSS específico; todo está en style.css -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('.lightbox-image');
+
+    const lightboxBackdrop = document.getElementById('lightbox-backdrop');
+    const lightboxImage    = document.getElementById('lightbox-image');
+    const lightboxControls = document.getElementById('lightbox-controls');
+    const closeLightboxBtn = document.getElementById('close-lightbox');
+    const prevImageBtn     = document.getElementById('prev-image');
+    const nextImageBtn     = document.getElementById('next-image');
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+        currentIndex = index;
+        lightboxImage.src = images[currentIndex].src;
+
+        lightboxBackdrop.style.display = 'flex';
+        lightboxControls.style.display = 'flex';
+        closeLightboxBtn.style.display = 'flex';
+
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideLightbox() {
+        lightboxBackdrop.style.display = 'none';
+        lightboxControls.style.display = 'none';
+        closeLightboxBtn.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function showNextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }
+    function showPrevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+    }
+
+    images.forEach((img, i) => {
+        img.addEventListener('click', () => {
+            showImage(i);
+        });
+    });
+
+    nextImageBtn.addEventListener('click', showNextImage);
+    prevImageBtn.addEventListener('click', showPrevImage);
+    closeLightboxBtn.addEventListener('click', hideLightbox);
+
+    document.addEventListener('keydown', (e) => {
+        if (lightboxBackdrop.style.display !== 'none') {
+            if (e.key === 'Escape') {
+                hideLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevImage();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

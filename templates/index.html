@@ -1,0 +1,147 @@
+<!-- templates/index.html -->
+{% extends "base_template.html" %}
+
+{% block title %}Inicio - Fuerza Inmobiliaria de Occidente{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section index-hero-section text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">¡Bienvenido a Fuerza Inmobiliaria de Occidente!</h1>
+        <!-- Agency Logo -->
+        <img
+            src="{{ url_for('static', filename='images/logo_dark_background.png') }}"
+            alt="Logo Fuerza Inmobiliaria de Occidente"
+            class="hero-logo mt-3"
+        >
+        <p class="lead mt-3">
+            Su socio de confianza para ventas y rentas de bienes raíces.
+        </p>
+        <a href="#services" class="btn btn-light btn-lg mt-4">
+            Conoce nuestros servicios
+        </a>
+        <a href="{{ url_for('properties') }}" class="btn btn-light btn-lg mt-4">
+            Conoce nuestras propiedades
+        </a>
+    </div>
+</section>
+
+<!-- Sobre Nosotros -->
+<section id="about" class="py-5">
+    <div class="container">
+        <h2 class="text-center">Sobre Nosotros</h2>
+        <p class="text-center">
+            Fuerza Inmobiliaria de Occidente se especializa en la venta y renta de propiedades
+            como casas, departamentos, locales comerciales y terrenos en el Área Metropolitana de Guadalajara.
+            Estamos comprometidos a brindar un servicio excepcional y ayudarlo a encontrar
+            su propiedad perfecta.
+        </p>
+    </div>
+</section>
+
+<!-- Servicios -->
+<section id="services" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center">Nuestros Servicios</h2>
+        <p class="text-center">
+            Ofrecemos una amplia gama de servicios diseñados para satisfacer todas sus necesidades
+            inmobiliarias.
+        </p>
+        <div class="row text-center">
+            <!-- Servicio 1: Venta de Propiedades -->
+            <div class="col-md-4 mb-4">
+                <div class="service-item">
+                    <img
+                        src="{{ url_for('static', filename='images/house.png') }}"
+                        alt="Venta de propiedades"
+                        class="service-image"
+                    >
+                    <h3>Venta de Propiedades</h3>
+                    <p>
+                        Encuentre su hogar ideal con nuestra selección de casas, departamentos y terrenos.
+                    </p>
+                </div>
+            </div>
+            <!-- Servicio 2: Renta de Inmuebles -->
+            <div class="col-md-4 mb-4">
+                <div class="service-item">
+                    <img
+                        src="{{ url_for('static', filename='images/apartment.png') }}"
+                        alt="Renta de inmuebles"
+                        class="service-image"
+                    >
+                    <h3>Renta de Inmuebles</h3>
+                    <p>
+                        Renta de propiedades residenciales y comerciales adaptadas a sus necesidades.
+                    </p>
+                </div>
+            </div>
+            <!-- Servicio 3: Asesoría Personalizada -->
+            <div class="col-md-4 mb-4">
+                <div class="service-item">
+                    <img
+                        src="{{ url_for('static', filename='images/advice.png') }}"
+                        alt="Asesoría personalizada"
+                        class="service-image"
+                    >
+                    <h3>Asesoría Personalizada</h3>
+                    <p>
+                        Reciba orientación experta en la compra, venta o renta de inmuebles.
+                    </p>
+                </div>
+            </div>
+            <!-- Servicio 4: Remodelaciones -->
+            <div class="col-md-4 mb-4">
+                <a href="{{ url_for('renovation_service') }}" style="text-decoration: none; color: inherit;">
+                    <div class="service-item">
+                        <img
+                            src="{{ url_for('static', filename='images/investment.png') }}"
+                            alt="Inversiones inmobiliarias"
+                            class="service-image"
+                        >
+                        <h3>Remodelaciones Inmobiliarias</h3>
+                        <p>
+                            Descubra cómo remodelar sus propiedades y aumentar sus ganancias en
+                            operaciones de bienes raíces.
+                        </p>
+                    </div>
+                </a>
+            </div>
+            <!-- Servicio 5: Seguridad Jurídica -->
+            <div class="col-md-4 mb-4">
+                <div class="service-item">
+                    <img
+                        src="{{ url_for('static', filename='images/shield.png') }}"
+                        alt="Seguridad jurídica"
+                        class="service-image"
+                    >
+                    <h3>Seguridad Jurídica</h3>
+                    <p>
+                        Garantizamos transacciones seguras y respaldo legal en cada proceso.
+                    </p>
+                </div>
+            </div>
+            <!-- Servicio 6: Gestión de Propiedades -->
+            <div class="col-md-4 mb-4">
+                <div class="service-item">
+                    <img
+                        src="{{ url_for('static', filename='images/management.png') }}"
+                        alt="Gestión de propiedades"
+                        class="service-image"
+                    >
+                    <h3>Gestión de Propiedades</h3>
+                    <p>
+                        Administramos su propiedad para maximizar su rentabilidad.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Puedes añadir scripts adicionales aquí si es necesario
+</script>
+{% endblock %}

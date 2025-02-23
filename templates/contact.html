@@ -1,0 +1,63 @@
+{% extends 'base_template.html' %}
+{% block title %}
+    Contacto - Fuerza Inmobiliaria de Occidente
+{% endblock %}
+{% block content %}
+    <header class="hero-section text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Contáctanos</h1>
+            <p class="lead mt-3">Estamos aquí para ayudarte con todas tus necesidades inmobiliarias.</p>
+        </div>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <section id="contact-info" class="text-center mb-5">
+                <h2 class="mb-4">Información de Contacto</h2>
+                <p><strong>Teléfono:</strong> 33 2201 8115</p>
+                <p><strong>Correo:</strong> servicios.inmobiliarios.zmg1138@gmail.com</p>
+                <p><strong>Dirección:</strong> C. Villacañas 2766, Colinas del Rey, 45130, Zapopan, Jal.</p>
+            </section>
+
+            <section id="map-and-form" class="row">
+                <div class="col-md-6 mb-4">
+                    <h2 class="mb-4">Envíanos un Mensaje</h2>
+                    <form action="{{ url_for('send_contact') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="nombre@correo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phonenumber" class="form-label">Teléfono:</label>
+                            <input type="tel" id="phonenumber" name="phonenumber" class="form-control" placeholder="Tu teléfono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Mensaje:</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Tu mensaje" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+
+                <div class="col-md-6">
+                    <h2 class="mb-4">Nuestra Ubicación</h2>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3731.0122507200226!2d-103.4039077758789!3d20.75029754638672!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428af81e9e8ea75%3A0x98b0913a6ae03bf1!2sC.%20Villaca%C3%B1as%202766%2C%20Colinas%20del%20Rey%2C%2045130%20Zapopan%2C%20Jal.!5e0!3m2!1sen!2smx!4v1734049606422!5m2!1sen!2smx"
+                            width="600"
+                            height="450"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+{% endblock %}

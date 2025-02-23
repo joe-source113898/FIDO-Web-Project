@@ -1,0 +1,10 @@
+# Ignorar archivos .env
+.env
+
+# Ignorar credenciales o llaves
+*.pem
+*.key
+
+# Ignorar carpetas de entornos virtuales
+venv/
+service-account-file.json

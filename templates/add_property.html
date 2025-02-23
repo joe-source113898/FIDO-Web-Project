@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Añadir Propiedad{% endblock %}
+{% block content %}
+<h1>Añadir Propiedad</h1>
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="name">Título</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="price">Precio</label>
+        <input type="number" name="price" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="operation">Tipo de Operación (Venta/Renta)</label>
+        <select name="operation" class="form-control" required>
+            <option value="venta">Venta</option>
+            <option value="renta">Renta</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="type">Tipo de Propiedad (Casa/Departamento/Local/Terreno)</label>
+        <select name="type" class="form-control" required>
+            <option value="casa">Casa</option>
+            <option value="departamento">Departamento</option>
+            <option value="local">Local</option>
+            <option value="terreno">Terreno</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="bedrooms">Recámara(s)</label>
+        <input type="number" name="bedrooms" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="bathrooms">Baño(s)</label>
+        <input type="number" name="bathrooms" class="form-control" step="0.01" required>
+    </div>
+    <div class="mb-3">
+        <label for="parking_spaces">Espacio para auto(s)</label>
+        <input type="number" name="parking_spaces" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="area">Área (m²)</label>
+        <input type="text" name="area" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="address">Dirección</label>
+        <input type="text" name="address" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="colony">Colonia</label>
+        <input type="text" name="colony" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="municipality">Municipio</label>
+        <input type="text" name="municipality" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="map_location">Coordenadas (Lat, Long)</label>
+        <input type="text" name="map_location" class="form-control" placeholder="Ejemplo: 20.751507, -103.429817">
+    </div>
+    <div class="mb-3">
+        <label for="images">Imágenes de la Propiedad</label>
+        <input type="file" name="images" multiple accept="image/*" class="form-control" required>
+        <small class="form-text text-muted">Puedes subir múltiples imágenes en formato JPEG, PNG o JPG.</small>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('admin_properties') }}" class="btn btn-secondary">Cancelar Añadir Propiedad</a>
+    </div>
+</form>
+{% endblock %}

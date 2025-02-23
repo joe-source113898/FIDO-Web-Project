@@ -1,0 +1,109 @@
+
+{% extends "base_template.html" %}
+{% block title %}Agentes - Fuerza Inmobiliaria de Occidente{% endblock %}
+
+{% block content %}
+<!-- Header de Agentes -->
+<header class="hero-section text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Nuestros Agentes</h1>
+        <p class="lead mt-3">Conoce a nuestro equipo de expertos listos para ayudarte.</p>
+    </div>
+</header>
+
+<main class="py-5">
+    <div class="container">
+        <div id="agentsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+<div class="carousel-item active"><div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card agent-card shadow h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Jaime Alberto</h5>
+                            <p class="card-text">Teléfono: 33 2201 8115</p>
+                            <img src="{{ url_for('static', filename='qr_codes/Jaime_c3c5be.png') }}" alt="QR WhatsApp" class="qr-code mb-3">
+                            <p class="mt-2">Escanea este QR para mandar mensaje directo al agente en WhatsApp</p>
+                            <a href="tel:+523322018115" class="btn btn-primary mt-3">
+                                <i class="bi bi-telephone-fill"></i> Llamar
+                            </a>
+                            <a href="https://wa.me/523322018115?text=Hola%20Jaime,%20te%20contacto%20desde%20la%20p%C3%A1gina%20web%20de%20FIDO%20ya%20que%20requiero%20de%20tus%20servicios." target="_blank" class="btn btn-success mt-3">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card agent-card shadow h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">José Manuel</h5>
+                            <p class="card-text">Teléfono: 33 1534 4231</p>
+                            <img src="{{ url_for('static', filename='qr_codes/José_3ea4fe.png') }}" alt="QR WhatsApp" class="qr-code mb-3">
+                            <p class="mt-2">Escanea este QR para mandar mensaje directo al agente en WhatsApp</p>
+                            <a href="tel:+523315344231" class="btn btn-primary mt-3">
+                                <i class="bi bi-telephone-fill"></i> Llamar
+                            </a>
+                            <a href="https://wa.me/523315344231?text=Hola%20José,%20te%20contacto%20desde%20la%20p%C3%A1gina%20web%20de%20FIDO%20ya%20que%20requiero%20de%20tus%20servicios." target="_blank" class="btn btn-success mt-3">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card agent-card shadow h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Alam Emmanuel</h5>
+                            <p class="card-text">Teléfono: 33 2714 1800</p>
+                            <img src="{{ url_for('static', filename='qr_codes/Alam_c9ae34.png') }}" alt="QR WhatsApp" class="qr-code mb-3">
+                            <p class="mt-2">Escanea este QR para mandar mensaje directo al agente en WhatsApp</p>
+                            <a href="tel:+523327141800" class="btn btn-primary mt-3">
+                                <i class="bi bi-telephone-fill"></i> Llamar
+                            </a>
+                            <a href="https://wa.me/523327141800?text=Hola%20Alam,%20te%20contacto%20desde%20la%20p%C3%A1gina%20web%20de%20FIDO%20ya%20que%20requiero%20de%20tus%20servicios." target="_blank" class="btn btn-success mt-3">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card agent-card shadow h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Juan Antonio</h5>
+                            <p class="card-text">Teléfono: 33 3004 0325</p>
+                            <img src="{{ url_for('static', filename='qr_codes/Juan_e18dcf.png') }}" alt="QR WhatsApp" class="qr-code mb-3">
+                            <p class="mt-2">Escanea este QR para mandar mensaje directo al agente en WhatsApp</p>
+                            <a href="tel:+523330040325" class="btn btn-primary mt-3">
+                                <i class="bi bi-telephone-fill"></i> Llamar
+                            </a>
+                            <a href="https://wa.me/523330040325?text=Hola%20Juan,%20te%20contacto%20desde%20la%20p%C3%A1gina%20web%20de%20FIDO%20ya%20que%20requiero%20de%20tus%20servicios." target="_blank" class="btn btn-success mt-3">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card agent-card shadow h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Lidia</h5>
+                            <p class="card-text">Teléfono: 33 2907 5566</p>
+                            <img src="{{ url_for('static', filename='qr_codes/Lidia_ca563b.png') }}" alt="QR WhatsApp" class="qr-code mb-3">
+                            <p class="mt-2">Escanea este QR para mandar mensaje directo al agente en WhatsApp</p>
+                            <a href="tel:+523329075566" class="btn btn-primary mt-3">
+                                <i class="bi bi-telephone-fill"></i> Llamar
+                            </a>
+                            <a href="https://wa.me/523329075566?text=Hola%20Lidia,%20te%20contacto%20desde%20la%20p%C3%A1gina%20web%20de%20FIDO%20ya%20que%20requiero%20de%20tus%20servicios." target="_blank" class="btn btn-success mt-3">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div></div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

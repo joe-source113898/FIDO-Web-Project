@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Administración de Propiedades{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Header con título y botón de cierre de sesión -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Administración de Propiedades</h1>
+        <!-- Enlace para cerrar sesión -->
+        <a href="{{ url_for('logout') }}" class="btn btn-secondary">Cerrar Sesión</a>
+    </div>
+
+    <!-- Contenedor de botones de acción con diseño responsivo -->
+    <div class="mb-4 admin-buttons">
+        <div class="row g-2">
+            <div class="col-12 col-sm-6 col-md-4">
+                <a href="{{ url_for('add_property') }}" class="btn btn-primary w-100">Añadir Propiedad</a>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <form action="{{ url_for('delete_all_properties') }}" method="post" class="d-grid"
+                      onsubmit="return confirm('¿Estás seguro de que deseas eliminar todas las propiedades? Esta acción no se puede deshacer.');">
+                    <button type="submit" class="btn btn-danger">Eliminar Todas las Propiedades</button>
+                </form>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <a href="{{ url_for('properties_pdf') }}" class="btn btn-secondary w-100">Descargar PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de tabla responsiva -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Operación</th>
+                    <th>Tipo</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                <tr>
+                    <td>{{ property[1] }}</td>
+                    <td>${{ "{:,.2f}".format(property[2]) }}</td>
+                    <td>{{ property[3] }}</td>
+                    <td>{{ property[4] }}</td>
+                    <td>
+                        <form action="{{ url_for('toggle_status', property_id=property[0]) }}" method="post">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="statusCheck{{ property[0] }}"
+                                       onchange="this.form.submit()"
+                                       {% if property[13] == 'En pausa' %}checked{% endif %}>
+                                <label class="form-check-label" for="statusCheck{{ property[0] }}">
+                                    {% if property[13] == 'En pausa' %}
+                                        En pausa
+                                    {% else %}
+                                        Normal
+                                    {% endif %}
+                                </label>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <!-- Se agrega la clase "me-2" para dar margen a la derecha al botón Editar -->
+                        <a href="{{ url_for('edit_property', property_id=property[0]) }}"
+                           class="btn btn-sm btn-warning me-2">Editar</a>
+                        <form action="{{ url_for('delete_property', property_id=property[0]) }}"
+                              method="post" class="d-inline"
+                              onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta propiedad? Esta acción no se puede deshacer.');">
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">No hay propiedades disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
