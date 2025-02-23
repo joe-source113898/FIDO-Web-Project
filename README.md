@@ -1,2 +1,2 @@
 # FIDO
-Website project made with Python-Flask of a real estate agency in Guadalajara, Jalisco, MX.
+Proyecto de sitio web realizado con Python-Flask de una agencia inmobiliaria en Guadalajara, Jalisco, MX.
