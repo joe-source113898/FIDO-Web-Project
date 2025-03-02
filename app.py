@@ -340,6 +340,17 @@ def property_detail(property_id, slug):
 #   PROPERTY PDF           #
 ############################
 
+def remove_emojis(text):
+    import re
+    emoji_pattern = re.compile(
+        "["
+        u"\U0001F600-\U0001F64F"  # emoticonos
+        u"\U0001F300-\U0001F5FF"  # símbolos y pictogramas
+        u"\U0001F680-\U0001F6FF"  # símbolos de transporte y mapas
+        u"\U0001F1E0-\U0001F1FF"  # banderas (iOS)
+        "]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', text)
+
 @app.route('/property/<int:property_id>/pdf', methods=['GET'])
 def property_pdf(property_id):
     property_data = get_property_by_id(property_id)
@@ -353,8 +364,13 @@ def property_pdf(property_id):
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    pdf.set_font("Arial", 'B', 16)
-    pdf.cell(0, 10, property_data[1], ln=True, align='C')
+    # Cargar la fuente Unicode (por ejemplo, Symbola) para poder renderizar caracteres que quisiéramos mantener
+    pdf.add_font('Symbola', '', os.path.join(BASE_DIR, 'fonts', 'Symbola.ttf'), uni=True)
+    pdf.set_font("Symbola", 'B', 16)
+
+    # Eliminar emojis del título
+    title = remove_emojis(property_data[1])
+    pdf.cell(0, 10, title, ln=True, align='C')
     pdf.ln(10)
 
     for image in images:
@@ -366,7 +382,7 @@ def property_pdf(property_id):
             except RuntimeError as e:
                 print(f"Error al cargar la imagen {image_path}: {e}")
 
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Symbola", '', 12)
 
     banos = float(property_data[6])
     banos_str = str(int(banos)) if banos.is_integer() else str(banos)
@@ -383,9 +399,10 @@ def property_pdf(property_id):
     ]
 
     for detail in details:
-        pdf.cell(0, 10, detail, ln=True, align='C')
+        detail_clean = remove_emojis(detail)
+        pdf.cell(0, 10, detail_clean, ln=True, align='C')
 
-    pdf_content = pdf.output(dest='S').encode('latin1')
+    pdf_content = pdf.output(dest='S').encode('utf-8')
     pdf_buffer = io.BytesIO(pdf_content)
     pdf_buffer.seek(0)
 
@@ -531,16 +548,25 @@ def edit_property(property_id):
         municipality = request.form['municipality']
         map_location = request.form.get('map_location', '')
 
+        # Procesar imágenes ya existentes
         existing_images = property_data[14].split(',') if property_data[14] else []
-        images = request.files.getlist('images')
         image_filenames = existing_images.copy()
 
+        # Procesar imágenes nuevas (si se agregan)
+        images = request.files.getlist('images')
         for image in images:
             if image and image.filename:
                 ext = os.path.splitext(image.filename)[1]
                 filename = f"{uuid.uuid4()}{ext}"
                 image.save(os.path.join(property_folder, filename))
                 image_filenames.append(filename)
+
+        # Verificar si se envió un nuevo orden de imágenes desde el front-end
+        new_order = request.form.get('images_order')
+        if new_order:
+            # El nuevo orden sobrescribe el arreglo anterior
+            ordered_images = new_order.split(',')
+            image_filenames = ordered_images
 
         status = request.form.get('status', property_data[13])
 

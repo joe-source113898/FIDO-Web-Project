@@ -838,29 +838,32 @@ def debug_sheets():
 ############################
 #   RENOVATION ROUTE       #
 ############################
-
 @app.route('/remodeling_service')
 def renovation_service():
-    before_dir = os.path.join(BASE_DIR, 'static', 'images', 'renovation_services', 'before')
-    after_dir = os.path.join(BASE_DIR, 'static', 'images', 'renovation_services', 'after')
+    """
+    Se define un solo directorio para las imágenes de remodelación
+    y se filtra cada imagen según si contiene 'before' o 'after'
+    en el nombre de archivo.
+    """
+    renovation_dir = os.path.join(BASE_DIR, 'static', 'images', 'renovation_services')
     before_images = []
     after_images = []
 
     try:
-        for filename in os.listdir(before_dir):
+        for filename in os.listdir(renovation_dir):
+            # Verificamos que sea un archivo de imagen
             if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                img_url = url_for('static', filename=f'images/renovation_services/before/{filename}')
-                before_images.append(img_url)
-    except FileNotFoundError:
-        print(f"El directorio {before_dir} no se encontró.")
+                # Convertimos a minúsculas para evitar diferencias en mayúsculas
+                lower_filename = filename.lower()
 
-    try:
-        for filename in os.listdir(after_dir):
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                img_url = url_for('static', filename=f'images/renovation_services/after/{filename}')
-                after_images.append(img_url)
+                if 'before' in lower_filename:
+                    img_url = url_for('static', filename=f'images/renovation_services/{filename}')
+                    before_images.append(img_url)
+                elif 'after' in lower_filename:
+                    img_url = url_for('static', filename=f'images/renovation_services/{filename}')
+                    after_images.append(img_url)
     except FileNotFoundError:
-        print(f"El directorio {after_dir} no se encontró.")
+        print(f"El directorio {renovation_dir} no se encontró.")
 
     return render_template('renovation_service.html', before_images=before_images, after_images=after_images)
 

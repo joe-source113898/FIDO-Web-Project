@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Añadir Propiedad</h1>
 <form method="post" enctype="multipart/form-data">
+    <!-- Otros campos del formulario -->
     <div class="mb-3">
         <label for="name">Título</label>
         <input type="text" name="name" class="form-control" required>
@@ -59,14 +60,64 @@
         <label for="map_location">Coordenadas (Lat, Long)</label>
         <input type="text" name="map_location" class="form-control" placeholder="Ejemplo: 20.751507, -103.429817">
     </div>
+
+    <!-- Sección para seleccionar y reordenar imágenes -->
     <div class="mb-3">
         <label for="images">Imágenes de la Propiedad</label>
-        <input type="file" name="images" multiple accept="image/*" class="form-control" required>
+        <input type="file" name="images" id="images" multiple accept="image/*" class="form-control" required>
         <small class="form-text text-muted">Puedes subir múltiples imágenes en formato JPEG, PNG o JPG.</small>
     </div>
-    <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ url_for('admin_properties') }}" class="btn btn-secondary">Cancelar Añadir Propiedad</a>
+    <div class="mb-3">
+        <label>Previsualización y orden de imágenes (arrastrar y soltar):</label>
+        <div id="preview-container" class="d-flex flex-wrap"></div>
+    </div>
+
+    <!-- Botones con estilo similar a edit_property.html -->
+    <div class="d-grid gap-2 d-md-block">
+        <button type="submit" class="btn btn-primary mb-2">Añadir Propiedad</button>
+        <a href="{{ url_for('admin_properties') }}" class="btn btn-secondary mb-2">Cancelar Añadición de Propiedad</a>
     </div>
 </form>
+
+<!-- Incluir SortableJS desde CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('images');
+    const previewContainer = document.getElementById('preview-container');
+    let fileList = [];
+
+    fileInput.addEventListener('change', function(event) {
+        fileList = Array.from(fileInput.files);
+        previewContainer.innerHTML = "";
+        fileList.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'image-preview me-2 mb-2';
+                div.setAttribute('data-index', index);
+                div.innerHTML = `<img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100px; height: auto;">`;
+                previewContainer.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+        // Inicializar SortableJS para permitir reordenar las previsualizaciones
+        Sortable.create(previewContainer, {
+            animation: 150
+        });
+    });
+
+    // Antes de enviar el formulario, reordenamos el FileList según el orden definido
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const dt = new DataTransfer();
+        const previews = previewContainer.querySelectorAll('.image-preview');
+        // Se itera sobre las previsualizaciones en el orden actual
+        previews.forEach(preview => {
+            const originalIndex = preview.getAttribute('data-index');
+            dt.items.add(fileList[originalIndex]);
+        });
+        fileInput.files = dt.files;
+    });
+});
+</script>
 {% endblock %}

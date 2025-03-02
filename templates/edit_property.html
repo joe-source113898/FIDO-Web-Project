@@ -72,30 +72,73 @@
                 <option value="En pausa" {% if property[13] == 'En pausa' %}selected{% endif %}>En pausa</option>
             </select>
         </div>
+
+        <!-- Sección para reordenar y eliminar imágenes existentes -->
+        <div class="mb-3">
+            <label>Reordenar y eliminar Imágenes (Arrastrar y soltar, clic en "X" para eliminar):</label>
+            <div id="sortable-images" class="d-flex flex-wrap" style="gap: 10px;">
+                {% if property[14] %}
+                    {% for image in property[14].split(',') %}
+                        <div class="image-item position-relative" data-filename="{{ image }}" style="width: 120px; margin-bottom: 10px;">
+                            <img src="{{ url_for('static', filename='images/properties/' ~ property[0] ~ '/' ~ image) }}"
+                                 alt="Imagen" class="img-thumbnail" style="width: 100%; height: auto; cursor: move;">
+                            <button type="button"
+                                    class="btn btn-danger btn-sm position-absolute"
+                                    style="top: 5px; right: 5px;"
+                                    onclick="removeImageItem(this)">X</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay imágenes disponibles.</p>
+                {% endif %}
+            </div>
+            <!-- Input oculto para enviar el nuevo orden -->
+            <input type="hidden" name="images_order" id="images_order" value="">
+        </div>
+
         <div class="d-grid gap-2 d-md-block">
             <button type="submit" class="btn btn-primary mb-2">Guardar Cambios</button>
-            <a href="{{ url_for('admin_properties') }}" class="btn btn-secondary mb-2">Cancelar Editar Propiedad</a>
+            <a href="{{ url_for('admin_properties') }}" class="btn btn-secondary mb-2">Cancelar Edición de Propiedad</a>
         </div>
     </form>
-
-    <!-- Sección para eliminar imágenes existentes -->
-    <div class="mt-4">
-        <small class="form-text text-muted">Imágenes actuales (haz clic sobre una imagen para eliminarla):</small>
-        <div class="mt-2 d-flex flex-wrap">
-            {% if property[14] %}
-                {% for image in property[14].split(',') %}
-                    <form action="{{ url_for('delete_image', property_id=property[0]) }}" method="POST" class="me-2 mb-2">
-                        <input type="hidden" name="filename" value="{{ image }}">
-                        <button type="submit" class="btn btn-link p-0 border-0" onclick="return confirm('¿Estás seguro de eliminar esta imagen?');">
-                            <img src="{{ url_for('static', filename='images/properties/' + property[0]|string + '/' + image) }}"
-                                 alt="Eliminar Imagen" class="img-thumbnail" style="width: 100px; height: auto;">
-                        </button>
-                    </form>
-                {% endfor %}
-            {% else %}
-                <p>No hay imágenes disponibles.</p>
-            {% endif %}
-        </div>
-    </div>
 </div>
+
+<!-- Incluir SortableJS y script para actualizar/eliminar imágenes -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('sortable-images');
+    // Inicializa SortableJS para permitir arrastrar y soltar
+    var sortable = Sortable.create(container, {
+        animation: 150,
+        onSort: updateOrder
+    });
+
+    // Función que actualiza el campo oculto con el orden actual de las imágenes
+    function updateOrder() {
+        var order = [];
+        container.querySelectorAll('.image-item').forEach(function(item) {
+            order.push(item.getAttribute('data-filename'));
+        });
+        document.getElementById('images_order').value = order.join(',');
+    }
+    // Llamamos a updateOrder() al cargar la página
+    updateOrder();
+});
+
+// Función para eliminar un item (imagen) de la lista
+function removeImageItem(button) {
+    if (confirm('¿Estás seguro de eliminar esta imagen?')) {
+        var item = button.closest('.image-item');
+        item.parentNode.removeChild(item);
+
+        var container = document.getElementById('sortable-images');
+        var order = [];
+        container.querySelectorAll('.image-item').forEach(function(el) {
+            order.push(el.getAttribute('data-filename'));
+        });
+        document.getElementById('images_order').value = order.join(',');
+    }
+}
+</script>
 {% endblock %}
